@@ -48,24 +48,8 @@ const TAG = "v-scroll",
       min-block-size: 100%;
     }
 
-    [part="track"] {
-      position: absolute;
-      inset-block: 0;
-      inset-inline-end: 0;
-      opacity: 0;
-      pointer-events: none;
-      transition:
-        opacity 160ms ease,
-        background-color 160ms ease;
-    }
-
     slot {
       display: contents;
-    }
-
-    b {
-      display: block;
-      font-weight: 400;
     }
 
     [hidden] {
@@ -313,7 +297,7 @@ const createDom = (host) => {
       display_el = document.createElement("div"),
       slot_el = document.createElement("slot"),
       track_el = document.createElement("i"),
-      bar_el = document.createElement("b");
+      bar_el = document.createElement("i");
 
     style_el.textContent = BASE_CSS;
     root_el.setAttribute("part", "root");
