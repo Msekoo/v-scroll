@@ -37,6 +37,7 @@ const { default: css_text } = await import(/* @vite-ignore */ THEME_IMPORT_PATH)
 
 - 源文件在 `src/theme/<theme>/v-scroll.css`
 - 由 [tools/theme-module-plugin.js](/Users/mokz/work-bentch/v-scroll/tools/theme-module-plugin.js) 在 `configResolved` 阶段读取并构建
+- 主题源文件或 SVG 光标变化时，会在 `handleHotUpdate` 阶段重新生成模块
 - 构建结果输出到 `public/theme/<theme>/v-scroll.js`
 - 页面通过 `$/` 的 `importmap` 映射切换主题目录
 
@@ -48,6 +49,11 @@ const { default: css_text } = await import(/* @vite-ignore */ THEME_IMPORT_PATH)
 
 - 源主题目录：`src/theme/<theme>/v-scroll.css`
 - 输出主题目录：`public/theme/<theme>/v-scroll.js`
+
+这里需要额外说明一点：
+
+- `src/theme/*` 才是主题源码
+- `public/theme/*` 是由 Vite 插件生成出来、供运行时加载的产物
 
 这样做的原因是：
 
@@ -106,6 +112,8 @@ v-scroll[dragging]::part(bar) { ... }
 - 主题模块是完整自包含的
 - 第三方切换主题时不需要额外处理光标资源路径
 - `importmap` 指向的主题目录只要有一个 `v-scroll.js` 即可工作
+
+因此，新增主题时如果还需要沿用这套光标能力，主题 CSS 里应继续保留这两个占位符，而不是手写固定 URL。
 
 ## 7. 当前项目的包管理仍以 npm 为准
 

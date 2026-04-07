@@ -28,9 +28,9 @@
 - `tools/theme-module-plugin.js`
   负责把主题 CSS 编译成 JS 模块的 Vite 插件。
 - `public/theme/default/v-scroll.js`
-  默认主题编译产物。
+  默认主题编译产物，不是主题源码。
 - `public/theme/graphite/v-scroll.js`
-  graphite 主题编译产物。
+  graphite 主题编译产物，不是主题源码。
 - `src/main.js`
   demo 页面入口。
 - `src/demo.css`
@@ -84,6 +84,35 @@ npm run build
 
 这意味着第三方接入时，只需要让 `$/` 指向自己的主题目录即可。
 
+## 第三方页面接入
+
+如果你要把当前组件接到别的页面里，最小接入方式是：
+
+```html
+<script type="importmap">
+{
+  "imports": {
+    "$/": "/theme/default/"
+  }
+}
+</script>
+
+<script type="module">
+  import "/src/v-scroll.js";
+</script>
+
+<v-scroll>
+  <div>content</div>
+  <div>content</div>
+</v-scroll>
+```
+
+其中：
+
+- `$/` 必须指向可访问的主题模块目录
+- 目录里至少要有 `v-scroll.js`
+- 组件脚本加载后会在运行时自行拉取 `$/v-scroll.js` 并把样式注入到 `head`
+
 ## 组件使用方式
 
 在当前项目里，demo 入口已经直接加载了组件：
@@ -126,6 +155,13 @@ v-scroll[dragging]::part(drag) { ... }
 public/theme/<theme-name>/v-scroll.js
 ```
 
+补充说明：
+
+- 主题源码应该改 `src/theme/<theme-name>/v-scroll.css`
+- 不应该手改 `public/theme/<theme-name>/v-scroll.js`
+- 如果主题里要使用题目要求的 SVG 光标占位能力，应继续使用 `__SVG_SCROLL__` 和 `__SVG_GRAB__`
+- 修改 `src/theme/*/v-scroll.css` 或 `svg/*.svg` 后，开发模式下插件会自动重新生成主题模块
+
 ## 当前实现状态
 
 当前项目已经实现：
@@ -142,6 +178,7 @@ public/theme/<theme-name>/v-scroll.js
 - hover / active / dragging 状态外露给主题 CSS
 - Vite 构建主题 CSS 模块
 - 通过 `importmap` 切换主题目录
+- 主题 CSS / SVG 变更后自动重新生成主题模块
 
 ## 当前已知边界
 
