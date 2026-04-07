@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>v-scroll demo</title>
+    <script>
+      const params = new URLSearchParams(location.search),
+        theme_name = params.get("theme") || "default",
+        import_map = document.createElement("script");
+
+      import_map.type = "importmap";
+      import_map.textContent = JSON.stringify({
+        imports: {
+          "$/": `/theme/${theme_name}/`
+        }
+      });
+
+      document.currentScript.after(import_map);
+      document.documentElement.dataset.theme = theme_name;
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script
+      type="module"
+      src="/src/main.js"
+    ></script>
+  </body>
+</html>

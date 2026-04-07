@@ -1,0 +1,47 @@
+:root {
+  color: #111;
+  font-family: "Avenir Next", "PingFang SC", "Helvetica Neue", sans-serif;
+  background: #fff;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-block-size: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+.page {
+  min-block-size: 100vh;
+  display: grid;
+  place-items: start center;
+  padding: 84px 16px 48px;
+}
+
+.demo-scroll {
+  display: block;
+  inline-size: 300px;
+  block-size: 680px;
+  border: 1px solid #dcdcdc;
+  background: #fff;
+}
+
+.item {
+  margin: 0;
+  padding-inline-end: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+
+  & + & {
+    margin-block-start: 22px;
+  }
+}

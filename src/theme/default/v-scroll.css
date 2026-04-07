@@ -1,0 +1,83 @@
+:root {
+  --svgScroll: __SVG_SCROLL__;
+  --svgGrab: __SVG_GRAB__;
+  --v-scroll-track-width: 14px;
+  --v-scroll-track-bg: rgba(0, 0, 0, 0.05);
+  --v-scroll-track-bg-turned: rgba(0, 0, 0, 0.07);
+  --v-scroll-thumb-width: 5px;
+  --v-scroll-thumb-radius: 999px;
+  --v-scroll-thumb-bg: #b8b8b8;
+  --v-scroll-thumb-bg-turned: #8f8f8f;
+  --v-scroll-thumb-bg-drag: #7f7f7f;
+  --v-scroll-thumb-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.42);
+  --v-scroll-reserve: 18px;
+}
+
+body.drag {
+  cursor: var(--svgGrab) !important;
+}
+
+v-scroll::part(root) {
+  position: relative;
+  block-size: 100%;
+  min-block-size: 100%;
+}
+
+v-scroll::part(scroll) {
+  block-size: 100%;
+  inline-size: 100%;
+  padding-inline-end: var(--v-scroll-reserve);
+  overscroll-behavior: contain;
+}
+
+v-scroll::part(display) {
+  min-block-size: 100%;
+}
+
+v-scroll::part(track) {
+  inset-inline-end: 0;
+  inline-size: var(--v-scroll-track-width);
+  background: var(--v-scroll-track-bg);
+  border-inline-start: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+v-scroll::part(bar) {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-end: calc((var(--v-scroll-track-width) - var(--v-scroll-thumb-width)) / 2);
+  inline-size: var(--v-scroll-thumb-width);
+  block-size: var(--v-scroll-thumb-size, 16px);
+  border-radius: var(--v-scroll-thumb-radius);
+  background: var(--v-scroll-thumb-bg);
+  box-shadow: var(--v-scroll-thumb-shadow);
+  transform: translateY(var(--v-scroll-thumb-offset, 3px));
+  transition:
+    background-color 160ms ease,
+    transform 60ms linear;
+  pointer-events: auto;
+  touch-action: none;
+}
+
+v-scroll[scrollable]:is([hovering], [active], [dragging])::part(track) {
+  opacity: 1;
+}
+
+v-scroll[scrollable] {
+  &::part(turned) {
+    background: var(--v-scroll-thumb-bg-turned);
+    cursor: var(--svgScroll);
+  }
+
+  &::part(drag) {
+    background: var(--v-scroll-thumb-bg-drag);
+    cursor: var(--svgGrab);
+  }
+}
+
+v-scroll[dragging]::part(bar) {
+  transition: background-color 160ms ease;
+}
+
+v-scroll[dragging]::part(track) {
+  background: var(--v-scroll-track-bg-turned);
+}
