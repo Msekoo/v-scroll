@@ -22,6 +22,10 @@ const importMapExternalPlugin = () => {
 
 export default defineConfig({
   plugins: [themeModulePlugin(), importMapExternalPlugin()],
+  test: {
+    environment: "jsdom",
+    setupFiles: "./tests/setup.js"
+  },
   server: {
     host: true
   },
